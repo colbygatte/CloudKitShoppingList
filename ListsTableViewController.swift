@@ -47,8 +47,11 @@ class ListsTableViewController: UITableViewController {
         menu.addAction(UIAlertAction(title: "Okay", style: .default, handler:{ (alertAction: UIAlertAction) in
             let list = List(listName: self.newListTextField.text!)
             self.db.save(list.toCKRecord(), completionHandler:{ (record, error) in
+                list.recordID = record?.recordID
                 self.lists.append(list)
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             })
         }))
         menu.addTextField(configurationHandler:{ (textField: UITextField) in
